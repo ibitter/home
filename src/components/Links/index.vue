@@ -49,6 +49,11 @@ let linksData = [
     link: "https://wp.ibit.cf/",
   },
   {
+    icon: Fire,
+    name: "JD快车",
+    link: "https://jd.ibit.cf/",
+  },
+  {
     icon: Cloud,
     name: "网盘",
     link: "https://pan.ibit.cf/",
