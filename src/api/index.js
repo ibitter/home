@@ -1,4 +1,4 @@
-// import axios from "axios";
+import axios from "axios";
 import fetchJsonp from "fetch-jsonp";
 
 /**
@@ -45,6 +45,34 @@ export const getPlayerList = async (server, type, id) => {
  */
 
 // 获取一言数据
+export async function GetMonitors(apikey) {
+  const postdata = {
+    api_key: apikey,
+    format: 'json',
+    logs: 1,
+  };
+  const response = await axios.post('https://api.uptimerobot.com/v2/getMonitors', postdata, {
+    timeout: 10000
+  });
+  let status = '未知';
+  if (response.data.stat !== 'ok') {
+    let status = '网络错误';
+    throw response.data.error;
+  };
+  if (response.data.monitors.status === 2} {
+    status = '正常';
+  };
+  if (response.data.monitors.status === 9} {
+    status = '离线';
+  };
+  return status;
+};
+
+/**
+ * Monitors
+ */
+
+// 获取Monitors数据
 export const getHitokoto = async () => {
   const res = await fetch("https://v1.hitokoto.cn");
   return await res.json();
