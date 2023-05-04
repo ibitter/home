@@ -55,7 +55,7 @@ export const getHitokoto = async () => {
  */
 
 // 获取Monitors数据
-export async function GetMonitors(apikey) {
+export const GetMonitors = async (apikey) => {
   const postdata = {
     api_key: apikey,
     format: 'json',
