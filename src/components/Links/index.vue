@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { GetMonitors } from "@/api";
 import { Icon } from "@vicons/utils";
 import {
