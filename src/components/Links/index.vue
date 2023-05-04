@@ -91,6 +91,7 @@ const GetMonitorsData = () => {
   linksData = linksData.map((data) => {
     if (typeof(data.key) == "undefined") {
       data['status'] = "正常";
+      continue;
     };
     data['status'] = GetMonitors(data.key);
   })
