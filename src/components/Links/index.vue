@@ -114,9 +114,9 @@ const GetMonitorsData = () => {
                 data.info =  text;
               }
           }
+        return data;
         })
      })
-     return linksData;
   } catch(e) {
       console.log(e)
   }
