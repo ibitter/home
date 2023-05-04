@@ -61,7 +61,7 @@ export const GetMonitors = async (apikey) => {
     format: 'json',
     logs: 1,
   };
-  const response = await axios.post('https://api.uptimerobot.com/v2/getMonitors', postdata, {
+  const response = await axios.post('https://cors.status.org.cn/uptimerobot/v2/getMonitors', postdata, {
     timeout: 10000
   });
   let status = '未知';
