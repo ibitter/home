@@ -21,6 +21,7 @@
             <component :is="item.icon" />
           </Icon>
           <span class="name">{{ item.name }}</span>
+          <span class="status">[状态：{{ item.name }}]</span>
         </div>
       </el-col>
     </el-row>
@@ -113,6 +114,10 @@ const jumpLink = (url) => {
         transition: 0.3s;
       }
       .name {
+        font-size: 1.1rem;
+        margin-left: 8px;
+      }
+      .status {
         font-size: 1.1rem;
         margin-left: 8px;
       }
