@@ -14,13 +14,13 @@
         @click="jumpLink(item.link)"
       >
         <div
-          class="item cards tooltip" data-tooltip="{{ item.info }}"
+          class="item cards"
           :style="index < 3 ? 'margin-bottom: 20px' : null"
         >
           <Icon size="26">
             <component :is="item.icon" />
           </Icon>
-          <span class="name">{{ item.name }}</span>
+          <span class="name tooltip" data-tooltip="{{ item.info }}">{{ item.name }}</span>
           <span class="status">[状态：{{ item.status }}]</span>
         </div>
       </el-col>
