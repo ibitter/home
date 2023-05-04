@@ -88,13 +88,17 @@ const jumpLink = (url) => {
 };
 //获取网站状态
 const GetMonitorsData = () => {
-  linksData = linksData.map((data) => {
-    if (typeof(data.key) == "undefined") {
-      data['status'] = "正常";
-      continue;
-    };
-    data['status'] = GetMonitors(data.key);
-  })
+  try {
+      linksData = linksData.map((data) => {
+          if(typeof(data.key) == "undefined") {
+              data['status'] = "正常";
+          } else {
+              data['status'] = GetMonitors(data.key);
+          }
+      })
+  } catch(e) {
+      console.log(e)
+  }
 };
 onMounted(() => {
   // 调用网站状态
