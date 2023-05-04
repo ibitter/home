@@ -93,7 +93,7 @@ const GetMonitorsData = () => {
       data['status'] = "正常";
     };
     data['status'] = GetMonitors(data.key);
-  }),
+  })
 };
 onMounted(() => {
   // 调用网站状态
