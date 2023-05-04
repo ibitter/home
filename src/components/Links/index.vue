@@ -49,31 +49,31 @@ let linksData = [
     icon: Blog,
     name: "博客",
     link: "https://wp.ibit.cf/",
-    status: GetMonitors('m794288793-aa52550d7d6d20dcd10c0e76')
+    key: 'm794288793-aa52550d7d6d20dcd10c0e76'
   },
   {
     icon: Fire,
     name: "JD快车",
     link: "https://jd.ibit.cf/",
-    status: GetMonitors('m794289772-64f14355832bfd361a75cb7f')
+    key: 'm794289772-64f14355832bfd361a75cb7f'
   },
   {
     icon: Cloud,
     name: "网盘",
     link: "https://pan.ibit.cf/",
-    status: GetMonitors('m794289776-c2996f8b9c65135ffffafb79')
+    key: 'm794289776-c2996f8b9c65135ffffafb79'
   },
   {
     icon: CompactDisc,
     name: "图床",
     link: "https://img.ibit.cf/",
-    status: GetMonitors('m794289777-b0a5b73833e31d4bfa91c5e6')
+    key: 'm794289777-b0a5b73833e31d4bfa91c5e6'
   },
   {
     icon: Book,
     name: "在线PS",
     link: "https://ps.ibit.cf/",
-    status: GetMonitors('m794289780-2cfaaebf2e80a79df1e72584')
+    key: 'm794289780-2cfaaebf2e80a79df1e72584'
   },
   {
     icon: Cloud,
@@ -86,6 +86,19 @@ let linksData = [
 const jumpLink = (url) => {
   window.open(url, "_blank");
 };
+//获取网站状态
+const GetMonitorsData = () => {
+  linksData = linksData.map((data) => {
+    if (typeof(data.key) == "undefined") {
+      data['status'] = "正常";
+    };
+    data['status'] = GetMonitors(data.key);
+  }),
+};
+onMounted(() => {
+  // 调用网站状态
+  GetMonitorsData();
+});
 </script>
 
 <style lang="scss" scoped>
@@ -109,7 +122,7 @@ const jumpLink = (url) => {
       width: 100%;
       display: flex;
       align-items: center;
-      flex-direction: row;
+      flex-direction: column;
       justify-content: center;
       animation: fade;
       -webkit-animation: fade 0.5s;
@@ -121,11 +134,9 @@ const jumpLink = (url) => {
       }
       .name {
         font-size: 1.1rem;
-        margin-left: 8px;
       }
       .status {
-        font-size: 1.1rem;
-        margin-left: 8px;
+        font-size: 0.8rem;
       }
       @media (min-width: 720px) and (max-width: 820px) {
         .name {
