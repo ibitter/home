@@ -92,7 +92,7 @@ const GetMonitorsData = () => {
   try {
     const siteData = GetMonitors(apiKey);
     siteData.map((site) => {
-      linksData = linksData.map((data, index) => {
+      linksData.map((data, index) => {
           if(typeof(data.key) == "undefined") {
               data.status = "正常";
               data.info = "";
