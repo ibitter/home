@@ -14,14 +14,14 @@
         @click="jumpLink(item.link)"
       >
         <div
-          class="item cards"
+          class="item cards tooltip" data-tooltip="{{ item.info }}"
           :style="index < 3 ? 'margin-bottom: 20px' : null"
         >
           <Icon size="26">
             <component :is="item.icon" />
           </Icon>
           <span class="name">{{ item.name }}</span>
-          <span class="status tooltip" data-tooltip="{{ item.info }}">[状态：{{ item.status }}]</span>
+          <span class="status">[状态：{{ item.status }}]</span>
         </div>
       </el-col>
     </el-row>
@@ -187,7 +187,7 @@ onMounted(() => {
         padding: 8px 4px;
         width: 120px;
         border-radius: 6px;
-        z-index: 99;
+        z-index: 99999;
         text-align: center;
         color: #000;
         transition: opacity 0.25s, transform 0.25s;
