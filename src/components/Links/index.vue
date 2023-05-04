@@ -68,6 +68,11 @@ let linksData = [
     name: "在线PS",
     link: "https://ps.ibit.cf/",
   },
+  {
+    icon: Cloud,
+    name: "站点监测",
+    link: "https://stats.uptimerobot.com/g9RpmtqoD0",
+  },
 ];
 
 // 链接跳转
