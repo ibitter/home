@@ -21,7 +21,7 @@
             <component :is="item.icon" />
           </Icon>
           <span class="name">{{ item.name }}</span>
-          <span class="status">[状态：{{ item.status }}]</span>
+          <span class="status tooltip" data-tooltip="{{ item.info }}">[状态：{{ item.status }}]</span>
         </div>
       </el-col>
     </el-row>
@@ -30,7 +30,7 @@
 
 <script setup>
 import { onMounted, ref } from "vue";
-import { GetMonitors } from "@/api";
+import { formatDuration, formatNumber, GetMonitors } from "@/api";
 import { Icon } from "@vicons/utils";
 import {
   Link,
@@ -49,31 +49,31 @@ let linksData = [
     icon: Blog,
     name: "博客",
     link: "https://wp.ibit.cf/",
-    key: 'm794288793-aa52550d7d6d20dcd10c0e76'
+    key: 'blog'
   },
   {
     icon: Fire,
     name: "JD快车",
     link: "https://jd.ibit.cf/",
-    key: 'm794289772-64f14355832bfd361a75cb7f'
+    key: 'JD'
   },
   {
     icon: Cloud,
     name: "网盘",
     link: "https://pan.ibit.cf/",
-    key: 'm794289776-c2996f8b9c65135ffffafb79'
+    key: 'pan'
   },
   {
     icon: CompactDisc,
     name: "图床",
     link: "https://img.ibit.cf/",
-    key: 'm794289777-b0a5b73833e31d4bfa91c5e6'
+    key: 'IMG'
   },
   {
     icon: Book,
     name: "在线PS",
     link: "https://ps.ibit.cf/",
-    key: 'm794289780-2cfaaebf2e80a79df1e72584'
+    key: 'PS'
   },
   {
     icon: Cloud,
@@ -87,15 +87,36 @@ const jumpLink = (url) => {
   window.open(url, "_blank");
 };
 //获取网站状态
+const apiKey = 'u2118239-d7fde8699b14499972c152e3';
 const GetMonitorsData = () => {
   try {
-      linksData = linksData.map((data) => {
+    const siteData = GetMonitors(apiKey);
+    siteData.map((site) => {
+      linksData = linksData.map((data, index) => {
           if(typeof(data.key) == "undefined") {
               data.status = "正常";
+              data.info = "";
           } else {
-              data.status = GetMonitors(data.key);
+              if(site.name == data.key) {
+                site.daily.map((v, i) => {
+                  let text = v.date.format('YYYY-MM-DD ');
+                  if (v.uptime >= 100) {
+                    text += `可用率 ${formatNumber(v.uptime)}%`;
+                  }
+                  else if (v.uptime <= 0 && v.down.times === 0) {
+                    text += '无数据';
+                  }
+                  else {
+                    text += `故障 ${v.down.times} 次，累计 ${formatDuration(v.down.duration)}，可用率 ${formatNumber(v.uptime)}%`;
+                  }
+                })
+                data.status =  site.status;
+                data.info =  text;
+              }
           }
-      })
+        })
+     })
+     return linksData;
   } catch(e) {
       console.log(e)
   }
@@ -142,6 +163,35 @@ onMounted(() => {
       }
       .status {
         font-size: 0.8rem;
+      }
+      .tooltip {
+        position: relative;
+      }
+
+      .tooltip:before {
+        opacity: 0;
+      }
+
+      .tooltip:hover:before {
+        opacity: 1;
+      }
+
+      .tooltip:before {
+        position: absolute;
+        left: -20px;
+        display: block;
+        content: attr(data-tooltip);
+        font-size: 12px;
+        background: #e6e6e6;
+        margin-top: 32px;
+        padding: 8px 4px;
+        width: 120px;
+        border-radius: 6px;
+        z-index: 99;
+        text-align: center;
+        color: #000;
+        transition: opacity 0.25s, transform 0.25s;
+        border: 1px solid #409eff;
       }
       @media (min-width: 720px) and (max-width: 820px) {
         .name {
