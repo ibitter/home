@@ -132,7 +132,7 @@ onBeforeUnmount(() => {
         width: 100%;
         text-overflow: ellipsis;
         overflow-x: hidden;
-        white-space: nowrap;
+        #white-space: nowrap;
       }
     }
   }
