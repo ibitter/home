@@ -21,7 +21,7 @@
             <component :is="item.icon" />
           </Icon>
           <span class="name">{{ item.name }}</span>
-          <span class="status">[状态：{{ item.name }}]</span>
+          <span class="status">[状态：{{ item.status }}]</span>
         </div>
       </el-col>
     </el-row>
@@ -30,6 +30,7 @@
 
 <script setup>
 import { ref } from "vue";
+import { GetMonitors } from "@/api";
 import { Icon } from "@vicons/utils";
 import {
   Link,
@@ -48,26 +49,31 @@ let linksData = [
     icon: Blog,
     name: "博客",
     link: "https://wp.ibit.cf/",
+    status: GetMonitors('m794288793-aa52550d7d6d20dcd10c0e76')
   },
   {
     icon: Fire,
     name: "JD快车",
     link: "https://jd.ibit.cf/",
+    status: GetMonitors('m794289772-64f14355832bfd361a75cb7f')
   },
   {
     icon: Cloud,
     name: "网盘",
     link: "https://pan.ibit.cf/",
+    status: GetMonitors('m794289776-c2996f8b9c65135ffffafb79')
   },
   {
     icon: CompactDisc,
     name: "图床",
     link: "https://img.ibit.cf/",
+    status: GetMonitors('m794289777-b0a5b73833e31d4bfa91c5e6')
   },
   {
     icon: Book,
     name: "在线PS",
     link: "https://ps.ibit.cf/",
+    status: GetMonitors('m794289780-2cfaaebf2e80a79df1e72584')
   },
   {
     icon: Cloud,
