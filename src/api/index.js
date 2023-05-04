@@ -69,10 +69,10 @@ export async function GetMonitors(apikey) {
     let status = '网络错误';
     throw response.data.error;
   };
-  if (response.data.monitors.0.status === 2} {
+  if (response.data.monitors[0].status === 2} {
     status = '正常';
   };
-  if (response.data.monitors.0.status === 9} {
+  if (response.data.monitors[0].status === 9} {
     status = '离线';
   };
   return status;
