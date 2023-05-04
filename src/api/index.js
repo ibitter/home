@@ -45,6 +45,16 @@ export const getPlayerList = async (server, type, id) => {
  */
 
 // 获取一言数据
+export const getHitokoto = async () => {
+  const res = await fetch("https://v1.hitokoto.cn");
+  return await res.json();
+};
+
+/**
+ * Monitors
+ */
+
+// 获取Monitors数据
 export async function GetMonitors(apikey) {
   const postdata = {
     api_key: apikey,
@@ -59,23 +69,13 @@ export async function GetMonitors(apikey) {
     let status = '网络错误';
     throw response.data.error;
   };
-  if (response.data.monitors.status === 2} {
+  if (response.data.monitors.0.status === 2} {
     status = '正常';
   };
-  if (response.data.monitors.status === 9} {
+  if (response.data.monitors.0.status === 9} {
     status = '离线';
   };
   return status;
-};
-
-/**
- * Monitors
- */
-
-// 获取Monitors数据
-export const getHitokoto = async () => {
-  const res = await fetch("https://v1.hitokoto.cn");
-  return await res.json();
 };
 
 /**
