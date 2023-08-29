@@ -19,7 +19,7 @@
       }"
       :mousewheel="true"
     >
-      <SwiperSlide v-for="site in siteLinksList" :key="site">
+      <SwiperSlide v-for="site in linksData" :key="site">
         <el-row class="link-all" :gutter="20">
           <el-col v-for="(item, index) in site" :span="8" :key="item">
             <div
@@ -59,15 +59,15 @@ import "swiper/scss/pagination";
 const store = mainStore();
 
 // 计算网站链接
-let siteLinksList = reactive(computed(() => {
+const siteLinksList = computed(() => {
   const result = [];
   for (let i = 0; i < siteLinks.length; i += 6) {
     const subArr = siteLinks.slice(i, i + 6);
     result.push(subArr);
   }
   return result;
-}));
-
+});
+let linksData = reactive(siteLinksList);
 // 网站链接图标
 const siteIcon = {
   Blog,
@@ -140,7 +140,7 @@ const GetMonitorsData = () => {
 
           if (monitor.status === 2) result.status = '在线';
           if (monitor.status === 9) result.status = '离线';
-          return siteLinksList.map((data, index) => {
+          return linksData.map((data, index) => {
               if(typeof(data.key) == "undefined") {
                   data.status = '正常';
                   data.info = '正常';
