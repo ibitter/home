@@ -109,14 +109,14 @@ let linksData = reactive([
   },
 ]);
 // 计算网站链接
-let siteLinksList = computed(() => {
+let siteLinksList = reactive(computed(() => {
   const result = [];
   for (let i = 0; i < siteLinks.length; i += 6) {
     const subArr = siteLinks.slice(i, i + 6);
     result.push(subArr);
   }
   return result;
-});
+}));
 // 网站链接图标
 const siteIcon = {
   Blog,
