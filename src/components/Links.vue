@@ -19,7 +19,7 @@
       }"
       :mousewheel="true"
     >
-      <SwiperSlide v-for="site in linksData" :key="site">
+      <SwiperSlide v-for="site in siteLinksList" :key="site">
         <el-row class="link-all" :gutter="20">
           <el-col v-for="(item, index) in site" :span="8" :key="item">
             <div
@@ -109,10 +109,10 @@ let linksData = reactive([
   },
 ]);
 // 计算网站链接
-const siteLinksList = computed(() => {
+let siteLinksList = computed(() => {
   const result = [];
-  for (let i = 0; i < linksData.length; i += 6) {
-    const subArr = linksData.slice(i, i + 6);
+  for (let i = 0; i < siteLinks.length; i += 6) {
+    const subArr = siteLinks.slice(i, i + 6);
     result.push(subArr);
   }
   return result;
@@ -189,7 +189,7 @@ const GetMonitorsData = () => {
 
           if (monitor.status === 2) result.status = '在线';
           if (monitor.status === 9) result.status = '离线';
-          return linksData.map((data, index) => {
+          return siteLinksList.map((data, index) => {
               if(typeof(data.key) == "undefined") {
                   data.status = '正常';
                   data.info = '正常';
