@@ -24,8 +24,8 @@
     "info": "无数据"
   },
   {
-    "icon": "CompactDisc",
-    "name": "图床",
+    "icon": "ImagesRegular",
+    "name": "TG图床",
     "link": "https://img.ibit.cf/",
     "key": "IMG",
     "status": "未知",
@@ -36,6 +36,14 @@
     "name": "在线PS",
     "link": "https://ps.ibit.cf/",
     "key": "PS",
+    "status": "未知",
+    "info": "无数据"
+  },
+  {
+    "icon": "Images",
+    "name": "柒度图床",
+    "link": "https://pic.ibit.cf/",
+    "key": "PIC",
     "status": "未知",
     "info": "无数据"
   },
