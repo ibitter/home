@@ -59,7 +59,7 @@ import "swiper/scss/pagination";
 const store = mainStore();
 
 
-let siteLinksList = reactive([
+let linksData = reactive([
   {
     icon: Blog,
     name: "博客",
@@ -109,7 +109,7 @@ let siteLinksList = reactive([
   },
 ]);
 // 计算网站链接
-const linksData = computed(() => {
+const siteLinksList = computed(() => {
   const result = [];
   for (let i = 0; i < linksData.length; i += 6) {
     const subArr = linksData.slice(i, i + 6);
