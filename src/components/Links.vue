@@ -140,7 +140,7 @@ const GetMonitorsData = () => {
 
           if (monitor.status === 2) result.status = '在线';
           if (monitor.status === 9) result.status = '离线';
-          return linksData.map((data, index) => {
+          return siteLinksList.map((data, index) => {
               if(typeof(data.key) == "undefined") {
                   data.status = '正常';
                   data.info = '正常';
