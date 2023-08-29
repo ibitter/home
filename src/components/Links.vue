@@ -59,7 +59,7 @@ import "swiper/scss/pagination";
 const store = mainStore();
 
 // 计算网站链接
-const siteLinksList = computed(() => {
+let siteLinksList = computed(() => {
   const result = [];
   for (let i = 0; i < siteLinks.length; i += 6) {
     const subArr = siteLinks.slice(i, i + 6);
