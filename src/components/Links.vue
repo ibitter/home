@@ -30,7 +30,7 @@
               <Icon size="26">
                 <component :is="siteIcon[item.icon]" />
               </Icon>
-              <span class="name text-hidden tooltip" :data-tooltip="item.info">{{ item.name }}</span>
+              <span class="name tooltip" :data-tooltip="item.info">{{ item.name }}</span>
               <span class="status">[状态：{{ item.status }}]</span>
             </div>
           </el-col>
@@ -162,7 +162,7 @@ const GetMonitorsData = () => {
       }
     })
     .catch( err => {
-      onError("错误：" + err);
+      onError("发生错误：" + err);
     });
 };
 
