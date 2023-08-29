@@ -59,64 +59,16 @@ import "swiper/scss/pagination";
 const store = mainStore();
 
 
-let linksData = reactive([
-  {
-    icon: Blog,
-    name: "博客",
-    link: "https://wp.ibit.cf/",
-    key: 'blog',
-    status: '未知',
-    info: '无数据'
-  },
-  {
-    icon: Compass,
-    name: "JD快车",
-    link: "https://jd.ibit.cf/",
-    key: 'JD',
-    status: '未知',
-    info: '无数据'
-  },
-  {
-    icon: Cloud,
-    name: "网盘",
-    link: "https://pan.ibit.cf/",
-    key: 'pan',
-    status: '未知',
-    info: '无数据'
-  },
-  {
-    icon: CompactDisc,
-    name: "图床",
-    link: "https://img.ibit.cf/",
-    key: 'IMG',
-    status: '未知',
-    info: '无数据'
-  },
-  {
-    icon: Book,
-    name: "在线PS",
-    link: "https://ps.ibit.cf/",
-    key: 'PS',
-    status: '未知',
-    info: '无数据'
-  },
-  {
-    icon: Cloud,
-    name: "站点监测",
-    link: "https://stats.uptimerobot.com/g9RpmtqoD0",
-    status: '正常',
-    info: '无数据'
-  },
-]);
+let linksData = reactive(siteLinks);
 // 计算网站链接
-let siteLinksList = reactive(computed(() => {
+let siteLinksList = computed(() => {
   const result = [];
-  for (let i = 0; i < siteLinks.length; i += 6) {
-    const subArr = siteLinks.slice(i, i + 6);
+  for (let i = 0; i < linksData.length; i += 6) {
+    const subArr = linksData.slice(i, i + 6);
     result.push(subArr);
   }
   return result;
-}));
+});
 // 网站链接图标
 const siteIcon = {
   Blog,
@@ -189,7 +141,7 @@ const GetMonitorsData = () => {
 
           if (monitor.status === 2) result.status = '在线';
           if (monitor.status === 9) result.status = '离线';
-          return siteLinksList.map((data, index) => {
+          return linksData.map((data, index) => {
               if(typeof(data.key) == "undefined") {
                   data.status = '正常';
                   data.info = '正常';
