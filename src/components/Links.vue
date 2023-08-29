@@ -30,7 +30,8 @@
               <Icon size="26">
                 <component :is="siteIcon[item.icon]" />
               </Icon>
-              <span class="name text-hidden">{{ item.name }}</span>
+              <span class="name text-hidden tooltip" :data-tooltip="item.info">{{ item.name }}</span>
+              <span class="status">[状态：{{ item.status }}]</span>
             </div>
           </el-col>
         </el-row>
@@ -41,18 +42,13 @@
 </template>
 
 <script setup>
+import { onMounted, reactive, h, ref } from "vue";
+import { formatDuration, formatNumber, GetMonitors } from "@/api";
+import { Error } from "@icon-park/vue-next";
+import dayjs from 'dayjs';
 import { Icon } from "@vicons/utils";
 // 可前往 https://www.xicons.org 自行挑选并在此处引入
-import {
-  Link,
-  Blog,
-  CompactDisc,
-  Cloud,
-  Compass,
-  Book,
-  Fire,
-  LaptopCode,
-} from "@vicons/fa"; // 注意使用正确的类别
+import { Link, Blog, CompactDisc, Cloud, Compass, Book, Fire, LaptopCode } from "@vicons/fa"; // 注意使用正确的类别
 import { mainStore } from "@/store";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { Pagination, Mousewheel } from "swiper";
@@ -69,7 +65,7 @@ const siteLinksList = computed(() => {
     const subArr = siteLinks.slice(i, i + 6);
     result.push(subArr);
   }
-  return result;
+  return reactive(result);
 });
 
 // 网站链接图标
@@ -92,8 +88,100 @@ const jumpLink = (data) => {
   }
 };
 
+//获取网站状态
+const apiKey = 'ur2118239-e58fe57991118564a44a55a1';
+//获取网站天数状态
+const CountDays = 60;
+const GetMonitorsData = () => {
+  // 获取地理位置信息
+  if (!apiKey) return onError("请配置UptimeRobot API Key");
+  GetMonitors(apiKey, CountDays)
+    .then((res) => {
+      if (res.status) {
+        res.data.monitors.map((monitor) => {
+          const dates = [];
+          const today = dayjs(new Date().setHours(0, 0, 0, 0));
+          for (let d = 0; d < CountDays; d++) {
+            dates.push(today.subtract(d, 'day'));
+          }
+          const ranges = monitor.custom_uptime_ranges.split('-');
+          const average = formatNumber(ranges.pop());
+          const daily = [];
+          const map = [];
+          dates.forEach((date, index) => {
+            map[date.format('YYYYMMDD')] = index;
+            daily[index] = {
+              date: date,
+              uptime: formatNumber(ranges[index]),
+              down: { times: 0, duration: 0 },
+            }
+          });
+
+          const total = monitor.logs.reduce((total, log) => {
+            if (log.type === 1) {
+              const date = dayjs.unix(log.datetime).format('YYYYMMDD');
+              total.duration += log.duration;
+              total.times += 1;
+              daily[map[date]].down.duration += log.duration;
+              daily[map[date]].down.times += 1;
+            }
+            return total;
+          }, { times: 0, duration: 0 });
+
+          const result = {
+            id: monitor.id,
+            name: monitor.friendly_name,
+            url: monitor.url,
+            average: average,
+            daily: daily,
+            total: total,
+            status: '未知',
+          };
+
+          if (monitor.status === 2) result.status = '在线';
+          if (monitor.status === 9) result.status = '离线';
+          return linksData.map((data, index) => {
+              if(typeof(data.key) == "undefined") {
+                  data.status = '正常';
+                  data.info = '正常';
+              } else {
+                  if(result.name == data.key) {
+                    result.daily.map((v, i) => {
+                      let text = result.total.times
+            ? `最近 ${CountDays} 天故障 ${result.total.times} 次，累计时长 ${formatDuration(result.total.duration)}，平均可用率 ${result.average}%`
+            : `最近 ${CountDays} 天可用率 ${result.average}%`;
+                    data.status = result.status;
+                    data.info = text;
+                    })
+                  }
+              }
+            })
+        })
+      } else {
+        onError("网站信息获取失败!");
+      }
+    })
+    .catch( err => {
+      onError("错误：" + err);
+    });
+};
+
+// 报错信息
+const onError = (message) => {
+  ElMessage({
+    message: message,
+    icon: h(Error, {
+      theme: "filled",
+      fill: "#efefef",
+    }),
+  });
+  console.error(message);
+};
+
 onMounted(() => {
   console.log(siteLinks);
+  // 调用网站状态
+  GetMonitorsData();
 });
 </script>
 
@@ -141,7 +229,7 @@ onMounted(() => {
       width: 100%;
       display: flex;
       align-items: center;
-      flex-direction: row;
+      flex-direction: column;
       justify-content: center;
       padding: 0 10px;
       animation: fade 0.5s;
@@ -158,7 +246,39 @@ onMounted(() => {
 
       .name {
         font-size: 1.1rem;
-        margin-left: 8px;
+      }
+      
+      .status {
+        font-size: 0.8rem;
+      }
+      .tooltip {
+        position: relative;
+      }
+
+      .tooltip:before {
+        opacity: 0;
+      }
+
+      .tooltip:hover:before {
+        opacity: 1;
+      }
+
+      .tooltip:before {
+        position: absolute;
+        left: -40px;
+        display: block;
+        content: attr(data-tooltip);
+        font-size: 12px;
+        background: #0d1e1db3;
+        margin-top: -32px;
+        padding: 8px 8px;
+        width: 120px;
+        border-radius: 6px;
+        z-index: 99999999;
+        /* text-align: center; */
+        color: #fff;
+        transition: opacity .25s,transform .25s;
+        border: 1px solid #76787a;
       }
       @media (min-width: 720px) and (max-width: 820px) {
         .name {

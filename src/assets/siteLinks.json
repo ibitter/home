@@ -2,36 +2,48 @@
   {
     "icon": "Blog",
     "name": "博客",
-    "link": "https://blog.imsyy.top/"
+    "link": "https://wp.ibit.cf/",
+    "key": "blog",
+    "status": "未知",
+    "info": "无数据"
+  },
+  {
+    "icon": "Compass",
+    "name": "JD快车",
+    "link": "https://jd.ibit.cf/",
+    "key": "JD",
+    "status": "未知",
+    "info": "无数据"
   },
   {
     "icon": "Cloud",
     "name": "网盘",
-    "link": "https://pan.imsyy.top/"
+    "link": "https://pan.ibit.cf/",
+    "key": "pan",
+    "status": "未知",
+    "info": "无数据"
   },
   {
     "icon": "CompactDisc",
-    "name": "音乐",
-    "link": "https://music.imsyy.top/"
-  },
-  {
-    "icon": "Compass",
-    "name": "起始页",
-    "link": "https://nav.imsyy.top/"
+    "name": "图床",
+    "link": "https://img.ibit.cf/",
+    "key": "IMG",
+    "status": "未知",
+    "info": "无数据"
   },
   {
     "icon": "Book",
-    "name": "网址集",
-    "link": "https://web.imsyy.top/"
+    "name": "在线PS",
+    "link": "https://ps.ibit.cf/",
+    "key": "PS",
+    "status": "未知",
+    "info": "无数据"
   },
   {
-    "icon": "Fire",
-    "name": "今日热榜",
-    "link": "https://hot.imsyy.top/"
-  },
-  {
-    "icon": "LaptopCode",
+    "icon": "Cloud",
     "name": "站点监测",
-    "link": "https://status.imsyy.top/"
+    "link": "https://stats.uptimerobot.com/g9RpmtqoD0",
+    "status": "正常",
+    "info": "无数据"
   }
 ]

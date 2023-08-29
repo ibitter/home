@@ -1,4 +1,5 @@
-// import axios from "axios";
+import axios from "axios";
+import dayjs from "dayjs";
 import fetchJsonp from "fetch-jsonp";
 
 /**
@@ -8,14 +9,12 @@ import fetchJsonp from "fetch-jsonp";
 // 获取音乐播放列表
 export const getPlayerList = async (server, type, id) => {
   const res = await fetch(
-    `${import.meta.env.VITE_SONG_API}?server=${server}&type=${type}&id=${id}`
+    `${import.meta.env.VITE_SONG_API}?server=${server}&type=${type}&id=${id}`,
   );
   const data = await res.json();
 
   if (data[0].url.startsWith("@")) {
-    const [handle, jsonpCallback, jsonpCallbackFunction, url] = data[0].url
-      .split("@")
-      .slice(1);
+    const [handle, jsonpCallback, jsonpCallbackFunction, url] = data[0].url.split("@").slice(1);
     const jsonpData = await fetchJsonp(url).then((res) => res.json());
     const domain = (
       jsonpData.req_0.data.sip.find((i) => !i.startsWith("http://ws")) ||
@@ -51,6 +50,60 @@ export const getHitokoto = async () => {
 };
 
 /**
+ * Monitors
+ */
+
+// 获取Monitors数据
+export function formatNumber(value) {
+  return (Math.floor(value * 100) / 100).toString();
+}
+
+export function formatDuration(seconds) {
+  let s = parseInt(seconds);
+  let m = 0;
+  let h = 0;
+  if (s >= 60) {
+    m = parseInt(s / 60);
+    s = parseInt(s % 60);
+    if (m >= 60) {
+      h = parseInt(m / 60);
+      m = parseInt(m % 60);
+    }
+  }
+  let text = `${s} 秒`;
+  if (m > 0) text = `${m} 分 ${text}`;
+  if (h > 0) text = `${h} 小时 ${text}`;
+  return text;
+}
+export async function GetMonitors(apikey, CountDays) {
+
+  const dates = [];
+  const today = dayjs(new Date().setHours(0, 0, 0, 0));
+  for (let d = 0; d < CountDays; d++) {
+    dates.push(today.subtract(d, 'day'));
+  }
+
+  const ranges = dates.map((date) => `${date.unix()}_${date.add(1, 'day').unix()}`);
+  const start = dates[dates.length - 1].unix();
+  const end = dates[0].add(1, 'day').unix();
+  ranges.push(`${start}_${end}`);
+
+  const postdata = {
+    api_key: apikey,
+    format: 'json',
+    logs: 1,
+    log_types: '1-2',
+    logs_start_date: start,
+    logs_end_date: end,
+    custom_uptime_ranges: ranges.join('-'),
+  };
+
+  return await axios.post('https://cors.status.org.cn/uptimerobot/v2/getMonitors', postdata, {
+    timeout: 10000
+  });
+}
+
+/**
  * 天气
  */
 
@@ -63,7 +116,7 @@ export const getAdcode = async (key) => {
 // 获取高德地理天气信息
 export const getWeather = async (key, city) => {
   const res = await fetch(
-    `https://restapi.amap.com/v3/weather/weatherInfo?key=${key}&city=${city}`
+    `https://restapi.amap.com/v3/weather/weatherInfo?key=${key}&city=${city}`,
   );
   return await res.json();
 };
