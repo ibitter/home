@@ -78,6 +78,8 @@ const siteIcon = {
   Book,
   Fire,
   LaptopCode,
+  Images, 
+  ImagesRegular
 };
 
 // 链接跳转
