@@ -79,7 +79,7 @@ watch(
 
 onMounted(() => {
   // 自定义鼠标
-  cursorInit();
+  //cursorInit();
 
   // 屏蔽右键
   document.oncontextmenu = () => {
