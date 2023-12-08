@@ -5,7 +5,7 @@
       <el-col :span="12">
         <div class="left">
           <Hitokoto />
-          <Music />
+          <Music v-if="playerHasId" />
         </div>
       </el-col>
       <el-col :span="12">
@@ -18,11 +18,7 @@
               <span class="sm-hidden">{{ currentTime.weekday }}</span>
             </div>
             <div class="text">
-              <span>
-                {{ currentTime.hour }}:{{ currentTime.minute }}:{{
-                  currentTime.second
-                }}</span
-              >
+              <span> {{ currentTime.hour }}:{{ currentTime.minute }}:{{ currentTime.second }}</span>
             </div>
           </div>
           <Weather />
@@ -44,6 +40,9 @@ const store = mainStore();
 // 当前时间
 const currentTime = ref({});
 const timeInterval = ref(null);
+
+// 播放器 id
+const playerHasId = import.meta.env.VITE_SONG_ID;
 
 // 更新时间
 const updateTimeData = () => {
@@ -134,7 +133,7 @@ onBeforeUnmount(() => {
         width: 100%;
         text-overflow: ellipsis;
         overflow-x: hidden;
-        #white-space: nowrap;
+        white-space: nowrap;
       }
     }
   }

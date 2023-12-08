@@ -24,6 +24,7 @@
       <Icon
         class="menu"
         size="24"
+        v-show="!store.backgroundShow"
         @click="store.mobileOpenState = !store.mobileOpenState"
       >
         <component :is="store.mobileOpenState ? CloseSmall : HamburgerButton" />
@@ -193,7 +194,7 @@ onBeforeUnmount(() => {
     .i-icon {
       transform: translateY(2px);
     }
-    @media (min-width: 720px) {
+    @media (min-width: 721px) {
       display: none;
     }
   }
