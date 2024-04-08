@@ -24,7 +24,7 @@
 import { MusicOne, PlayWrong } from "@icon-park/vue-next";
 import { getPlayerList } from "@/api";
 import { mainStore } from "@/store";
-import aplayer from "@worstone/vue-aplayer";
+import APlayer from "@worstone/vue-aplayer";
 
 const store = mainStore();
 
