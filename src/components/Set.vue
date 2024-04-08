@@ -4,10 +4,10 @@
       <el-collapse-item title="个性壁纸" name="1">
         <div class="bg-set">
           <el-radio-group v-model="coverType" text-color="#ffffff" @change="radioChange">
-            <el-radio label="0" size="large" border>默认壁纸</el-radio>
-            <el-radio label="1" size="large" border>每日一图</el-radio>
-            <el-radio label="2" size="large" border>随机风景</el-radio>
-            <el-radio label="3" size="large" border>随机动漫</el-radio>
+            <el-radio value="0" size="large" border>默认壁纸</el-radio>
+            <el-radio value="1" size="large" border>每日一图</el-radio>
+            <el-radio value="2" size="large" border>随机风景</el-radio>
+            <el-radio value="3" size="large" border>随机动漫</el-radio>
           </el-radio-group>
         </div>
       </el-collapse-item>
@@ -101,7 +101,7 @@ const {
   playerAutoplay,
   playerOrder,
   playerLoop,
-} =storeToRefs(store);
+} = storeToRefs(store);
 
 // 默认选中项
 const activeName = ref("1");
@@ -125,6 +125,7 @@ const radioChange = () => {
     --el-collapse-content-bg-color: #ffffff10;
     border-color: transparent;
     overflow: hidden;
+
     :deep(.el-collapse-item__header) {
       background-color: #ffffff30;
       color: #fff;
@@ -132,8 +133,10 @@ const radioChange = () => {
       padding-left: 18px;
       border-color: transparent;
     }
+
     :deep(.el-collapse-item__wrap) {
       border-color: transparent;
+
       .el-collapse-item__content {
         padding: 20px;
         .item {
@@ -150,6 +153,7 @@ const radioChange = () => {
             .el-radio {
               margin: 2px 10px 2px 0;
               border-radius: 5px;
+
               &:last-child {
                 margin-right: 0;
               }
@@ -158,27 +162,33 @@ const radioChange = () => {
         }
         .el-radio-group {
           justify-content: space-between;
+
           .el-radio {
             margin: 10px 16px;
             background: #ffffff26;
             border: 2px solid transparent;
             border-radius: 8px;
+
             .el-radio__label {
               color: #fff;
             }
+
             .el-radio__inner {
               background: #ffffff06 !important;
               border: 2px solid #eeeeee !important;
             }
+
             &.is-checked {
               background: #ffffff06 !important;
               border: 2px solid #eeeeee !important;
             }
+
             .is-checked {
               .el-radio__inner {
                 background-color: #ffffff30 !important;
                 border-color: #fff !important;
               }
+
               & + .el-radio__label {
                 color: #fff !important;
               }

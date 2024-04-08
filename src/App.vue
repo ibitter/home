@@ -12,11 +12,7 @@
           <MainRight v-show="!store.boxOpenState" />
           <Box v-show="store.boxOpenState" />
         </section>
-        <section
-          class="more"
-          v-show="store.setOpenState"
-          @click="store.setOpenState = false"
-        >
+        <section class="more" v-show="store.setOpenState" @click="store.setOpenState = false">
           <MoreSet />
         </section>
       </div>
@@ -75,7 +71,7 @@ watch(
     if (value < 990) {
       store.boxOpenState = false;
     }
-  }
+  },
 );
 
 onMounted(() => {
@@ -108,8 +104,7 @@ onMounted(() => {
   window.addEventListener("resize", getWidth);
 
   // 控制台输出
-  const styleTitle1 =
-    "font-size: 20px;font-weight: 600;color: rgb(244,167,89);";
+  const styleTitle1 = "font-size: 20px;font-weight: 600;color: rgb(244,167,89);";
   const styleTitle2 = "font-size:12px;color: rgb(244,167,89);";
   const styleContent = "color: rgb(30,152,255);";
   const title1 = "無名の主页";
@@ -121,12 +116,7 @@ onMounted(() => {
  _| |_| |  | |____) |  | |      | |
 |_____|_|  |_|_____/   |_|      |_|`;
   const content = `\n\n版本: ${config.version}\n主页: ${config.home}\nGithub: ${config.github}`;
-  console.info(
-    `%c${title1} %c${title2} %c${content}`,
-    styleTitle1,
-    styleTitle2,
-    styleContent
-  );
+  console.info(`%c${title1} %c${title2} %c${content}`, styleTitle1, styleTitle2, styleContent);
 });
 
 onBeforeUnmount(() => {
@@ -143,8 +133,7 @@ onBeforeUnmount(() => {
   height: 100%;
   transform: scale(1.2);
   transition: transform 0.3s;
-  animation: fade-blur-main-in 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94)
-    forwards;
+  animation: fade-blur-main-in 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
   animation-delay: 0.5s;
   .container {
     width: 100%;

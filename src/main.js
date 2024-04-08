@@ -1,13 +1,12 @@
-import {
-    createApp
-} from 'vue';
+import { createApp } from 'vue';
 import '@/style/style.scss';
 import App from '@/App.vue';
 // 引入 pinia
-import {
-    createPinia
-} from 'pinia';
+import { createPinia } from 'pinia';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
+// swiper
+import "swiper/scss";
+import "swiper/scss/pagination";
 
 const app = createApp(App);
 const pinia = createPinia();

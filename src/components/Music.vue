@@ -65,6 +65,7 @@
     </div>
   </Transition>
 </template>
+
 <script setup>
 import {
   GoStart,
@@ -79,9 +80,11 @@ import {
 import Player from "@/components/Player.vue";
 import { mainStore } from "@/store";
 const store = mainStore();
+
 // 音量条数据
 const volumeShow = ref(false);
 const volumeNum = ref(store.musicVolume ? store.musicVolume : 0.7);
+
 // 播放列表数据
 const musicListShow = ref(false);
 const playerRef = ref(null);
@@ -90,24 +93,29 @@ const playerData = reactive({
   type: import.meta.env.VITE_SONG_TYPE,
   id: import.meta.env.VITE_SONG_ID,
 });
+
 // 开启播放列表
 const openMusicList = () => {
   musicListShow.value = true;
   playerRef.value.toggleList();
 };
+
 // 关闭播放列表
 const closeMusicList = () => {
   musicListShow.value = false;
   playerRef.value.toggleList();
 };
+
 // 音乐播放暂停
 const changePlayState = () => {
   playerRef.value.playToggle();
 };
+
 // 音乐上下曲
 const changeMusicIndex = (type) => {
   playerRef.value.changeSong(type);
 };
+
 onMounted(() => {
   // 空格键事件
   window.addEventListener("keydown", (e) => {
@@ -121,6 +129,7 @@ onMounted(() => {
   // 挂载方法至 window
   window.$openList = openMusicList;
 });
+
 // 监听音量变化
 watch(
   () => volumeNum.value,
@@ -130,6 +139,7 @@ watch(
   },
 );
 </script>
+
 <style lang="scss" scoped>
 .music {
   width: 100%;
@@ -278,6 +288,7 @@ watch(
     }
   }
 }
+
 // 弹窗动画
 .zoom-enter-active {
   animation: zoom 0.4s ease-in-out;

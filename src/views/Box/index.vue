@@ -43,6 +43,7 @@ const closeShow = ref(false);
   flex: 1 0 0%;
   margin-left: 0.75rem;
   height: 80%;
+  max-width: 50%;
   position: relative;
   animation: fade 0.5s;
 
@@ -57,7 +58,9 @@ const closeShow = ref(false);
     right: 14px;
     width: 28px;
     height: 28px;
-    transition: transform 0.3s, opacity 0.3s;
+    transition:
+      transform 0.3s,
+      opacity 0.3s;
 
     &:hover {
       transform: scale(1.2);
@@ -73,6 +76,8 @@ const closeShow = ref(false);
   }
 
   .content {
+    display: flex;
+    flex-direction: column;
     padding: 30px;
     width: 100%;
     height: 100%;

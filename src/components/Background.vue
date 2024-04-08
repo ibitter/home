@@ -45,15 +45,18 @@ const changeBg = (type) => {
   } else if (type == 2) {
     bgUrl.value = "https://api.aixiaowai.cn/gqapi/gqapi.php";
   } else if (type == 3) {
-    bgUrl.value = "https://api.aixiaowai.cn/gqapi/gqapi.php";
+    bgUrl.value = "https://api.aixiaowai.cn/api/api.php";
   }
 };
 
 // 图片加载完成
 const imgLoadComplete = () => {
-  imgTimeout.value = setTimeout(() => {
-    store.setImgLoadStatus(true);
-  }, Math.floor(Math.random() * (600 - 300 + 1)) + 300);
+  imgTimeout.value = setTimeout(
+    () => {
+      store.setImgLoadStatus(true);
+    },
+    Math.floor(Math.random() * (600 - 300 + 1)) + 300,
+  );
 };
 
 // 图片动画完成
@@ -117,7 +120,9 @@ onBeforeUnmount(() => {
     object-fit: cover;
     backface-visibility: hidden;
     filter: blur(20px) brightness(0.3);
-    transition: filter 0.3s, transform 0.3s;
+    transition:
+      filter 0.3s,
+      transform 0.3s;
     animation: fade-blur-in 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
     animation-delay: 0.45s;
   }
@@ -128,10 +133,7 @@ onBeforeUnmount(() => {
     top: 0;
     width: 100%;
     height: 100%;
-    background-image: radial-gradient(
-        rgba(0, 0, 0, 0) 0,
-        rgba(0, 0, 0, 0.5) 100%
-      ),
+    background-image: radial-gradient(rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0.5) 100%),
       radial-gradient(rgba(0, 0, 0, 0) 33%, rgba(0, 0, 0, 0.3) 166%);
 
     transition: 1.5s;
