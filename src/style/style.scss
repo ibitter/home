@@ -38,11 +38,13 @@ p {
 // 字体文件
 @font-face {
   font-family: "Pacifico-Regular";
+  font-display: swap;
   src: url("/font/Pacifico-Regular.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "UnidreamLED";
+  font-display: swap;
   src: url("/font/UnidreamLED.ttf") format("truetype");
 }
 
@@ -62,7 +64,9 @@ p {
   background-color: #00000040;
   backdrop-filter: blur(10px);
   transform: scale(1);
-  transition: backdrop-filter 0.3s, transform 0.3s;
+  transition:
+    backdrop-filter 0.3s,
+    transform 0.3s;
   &:hover {
     transform: scale(1.01);
   }
@@ -164,7 +168,7 @@ p {
   }
   to {
     filter: blur(0) brightness(1);
-    transform: scale(1.2);
+    transform: scale(1);
   }
 }
 

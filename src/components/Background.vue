@@ -2,9 +2,9 @@
   <div :class="store.backgroundShow ? 'cover show' : 'cover'">
     <img
       v-show="store.imgLoadStatus"
+      :src="bgUrl"
       class="bg"
       alt="cover"
-      :src="bgUrl"
       @load="imgLoadComplete"
       @error.once="imgLoadError"
       @animationend="imgAnimationEnd"
@@ -76,6 +76,14 @@ const imgLoadError = () => {
   bgUrl.value = `/images/background${bgRandom}.jpg`;
 };
 
+// 监听壁纸切换
+watch(
+  () => store.coverType,
+  (value) => {
+    changeBg(value);
+  },
+);
+
 onMounted(() => {
   // 加载壁纸
   changeBg(store.coverType);
@@ -110,7 +118,7 @@ onBeforeUnmount(() => {
     backface-visibility: hidden;
     filter: blur(20px) brightness(0.3);
     transition: filter 0.3s, transform 0.3s;
-    animation: fade-blur-in 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation: fade-blur-in 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
     animation-delay: 0.45s;
   }
   .gray {
