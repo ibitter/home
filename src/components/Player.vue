@@ -1,21 +1,21 @@
 <template>
-  <aplayer
-    showLrc
-    ref="player"
+  <APlayer
     v-if="playList[0]"
-    :music="playList[playIndex]"
-    :list="playList"
-    :autoplay="autoplay"
+    ref="player"
+    :audio="playList"
+    :autoplay="store.playerAutoplay"
     :theme="theme"
-    :repeat="repeat"
-    :shuffle="shuffle"
-    :listMaxHeight="listMaxHeight"
-    :listFolded="listFolded"
+    :autoSwitch="false"
+    :loop="store.playerLoop"
+    :order="store.playerOrder"
     :volume="volume"
+    :showLrc="true"
+    :listFolded="listFolded"
+    :listMaxHeight="listMaxHeight"
+    :noticeSwitch="false"
     @play="onPlay"
     @pause="onPause"
     @timeupdate="onTimeUp"
-    @onSelectSong="onSelectSong"
     @error="loadMusicError"
   />
 </template>
@@ -132,7 +132,7 @@ const onPlay = () => {
 
 // 暂停
 const onPause = () => {
-  store.setPlayerState(player.value.audio.paused);
+  store.setPlayerState(player.value.audioRef.paused);
 };
 
 // 音频时间更新事件
@@ -158,7 +158,7 @@ const playToggle = () => {
 
 // 切换音量事件
 const changeVolume = (value) => {
-  player.value.audio.volume = value;
+  player.value.setVolume(value, false);
 };
 
 // 切换上下曲
@@ -203,10 +203,10 @@ defineExpose({ playToggle, changeVolume, changeSong, toggleList });
 <style lang="scss" scoped>
 .aplayer {
   width: 80%;
-  background: transparent;
   border-radius: 6px;
   font-family: "HarmonyOS_Regular", sans-serif !important;
   :deep(.aplayer-body) {
+    background-color: transparent;
     .aplayer-pic {
       display: none;
     }
@@ -228,8 +228,8 @@ defineExpose({ playToggle, changeVolume, changeSong, toggleList });
       }
       .aplayer-lrc {
         text-align: left;
-        margin: 4px 0 6px 6px;
-        height: 100%;
+        margin: 7px 0 6px 6px;
+        height: 44px;
         mask: linear-gradient(
           #fff 15%,
           #fff 85%,
