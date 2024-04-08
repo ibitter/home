@@ -24,7 +24,7 @@
 import { MusicOne, PlayWrong } from "@icon-park/vue-next";
 import { getPlayerList } from "@/api";
 import { mainStore } from "@/store";
-import aplayer from "vue3-aplayer";
+import aplayer from "@worstone/vue-aplayer";
 
 const store = mainStore();
 
@@ -36,31 +36,13 @@ const playList = ref([]);
 
 // 歌曲播放项
 const playIndex = ref(0);
-const playListCount = ref(0);
-
-const skipTimeout = ref(null);
 
 // 配置项
 const props = defineProps({
-  // 音频自动播放
-  autoplay: {
-    type: Boolean,
-    default: false,
-  },
   // 主题色
   theme: {
     type: String,
     default: "#efefef",
-  },
-  // 音频循环播放
-  repeat: {
-    type: String,
-    default: "list", //'list' | 'music' | 'none'
-  },
-  // 随机播放
-  shuffle: {
-    type: Boolean,
-    default: false,
   },
   // 默认音量
   volume: {
@@ -92,42 +74,29 @@ const props = defineProps({
   },
   // 列表最大高度
   listMaxHeight: {
-    type: String,
-    default: "420px",
+    type: Number,
+    default: 420,
   },
+});
+
+const listHeight = computed(() => {
+  return props.listMaxHeight + "px";
 });
 
 // 初始化播放器
 onMounted(() => {
   nextTick(() => {
     try {
-      getPlayerList(props.songServer, props.songType, props.songId).then(
-        (res) => {
-          console.log(res);
-          // 生成歌单信息
-          playIndex.value = Math.floor(Math.random() * res.length);
-          playListCount.value = res.length;
-          // 更改播放器加载状态
-          store.musicIsOk = true;
-          // 生成歌单
-          res.forEach((v) => {
-            playList.value.push({
-              title: v.name || v.title,
-              artist: v.artist || v.author,
-              src: v.url || v.src,
-              pic: v.pic,
-              lrc: v.lrc,
-            });
-          });
-          console.log(
-            "音乐加载完成",
-            playList.value,
-            playIndex.value,
-            playListCount.value,
-            props.volume
-          );
-        }
-      );
+      getPlayerList(props.songServer, props.songType, props.songId).then((res) => {
+        console.log(res);
+        // 更改播放器加载状态
+        store.musicIsOk = true;
+        // 生成歌单
+        playList.value = res;
+        console.log("音乐加载完成");
+        console.log(playList.value);
+        console.log(playIndex.value, playList.value.length, props.volume);
+      });
     } catch (err) {
       console.error(err);
       store.musicIsOk = false;
@@ -146,13 +115,11 @@ onMounted(() => {
 // 播放
 const onPlay = () => {
   console.log("播放");
+  playIndex.value = player.value.aplayer.index;
   // 播放状态
-  store.setPlayerState(player.value.audio.paused);
+  store.setPlayerState(player.value.audioRef.paused);
   // 储存播放器信息
-  store.setPlayerData(
-    player.value.currentMusic.title,
-    player.value.currentMusic.artist
-  );
+  store.setPlayerData(playList.value[playIndex.value].name, playList.value[playIndex.value].artist);
   ElMessage({
     message: store.getPlayerData.name + " - " + store.getPlayerData.artist,
     grouping: true,
@@ -170,16 +137,18 @@ const onPause = () => {
 
 // 音频时间更新事件
 const onTimeUp = () => {
-  let playerRef = player.value.$.vnode.el;
-  if (playerRef) {
-    const currentLrcElement = playerRef.querySelector(".aplayer-lrc-current");
-    const previousLrcElement = currentLrcElement?.previousElementSibling;
-    const lrcContent =
-      currentLrcElement?.innerHTML ||
-      previousLrcElement?.innerHTML ||
-      "这句没有歌词";
-    store.setPlayerLrc(lrcContent);
+  let lyrics = player.value.aplayer.lyrics[playIndex.value];
+  let lyricIndex = player.value.aplayer.lyricIndex;
+  if (!lyrics || !lyrics[lyricIndex]) {
+    return;
   }
+  let lrc = lyrics[lyricIndex][1];
+  if (lrc === "Loading") {
+    lrc = "歌词加载中";
+  } else if (lrc === "Not available") {
+    lrc = "歌词加载失败";
+  }
+  store.setPlayerLrc(lrc);
 };
 
 // 切换播放暂停事件
@@ -192,40 +161,26 @@ const changeVolume = (value) => {
   player.value.audio.volume = value;
 };
 
-const onSelectSong = (val) => {
-  console.log(val);
-};
-
 // 切换上下曲
 const changeSong = (type) => {
-  playIndex.value = player.value.playIndex;
-  playIndex.value += type ? 1 : -1;
-  // 判断是否处于最后/第一首
-  if (playIndex.value < 0) {
-    playIndex.value = playListCount.value - 1;
-  } else if (playIndex.value >= playListCount.value) {
-    playIndex.value = 0;
-  }
-  // console.log(playIndex.value, playList.value[playIndex.value]);
+  type === 0 ? player.value.skipBack() : player.value.skipForward();
   nextTick(() => {
     player.value.play();
   });
+};
+
+// 切换歌曲列表状态
+const toggleList = () => {
+  player.value.toggleList();
 };
 
 // 加载音频错误
 const loadMusicError = () => {
   let notice = "";
   if (playList.value.length > 1) {
-    notice = "播放音频出现错误，播放器将在 2s 后进行跳转";
-    // 播放下一首
-    skipTimeout.value = setTimeout(() => {
-      changeSong(1);
-      if (!player.value.audio.paused) {
-        onPlay();
-      }
-    }, 2000);
+    notice = "播放歌曲出现错误，播放器将在 2s 后进行下一首";
   } else {
-    notice = "播放音频出现错误";
+    notice = "播放歌曲出现错误";
   }
   ElMessage({
     message: notice,
@@ -236,15 +191,13 @@ const loadMusicError = () => {
       duration: 2000,
     }),
   });
-  console.error("播放音乐: " + player.value.currentMusic.title + " 出现错误");
+  console.error(
+    "播放歌曲: " + player.value.aplayer.audio[player.value.aplayer.index].name + " 出现错误",
+  );
 };
 
 // 暴露子组件方法
-defineExpose({ playToggle, changeVolume, changeSong });
-
-onBeforeUnmount(() => {
-  clearTimeout(skipTimeout.value);
-});
+defineExpose({ playToggle, changeVolume, changeSong, toggleList });
 </script>
 
 <style lang="scss" scoped>
@@ -308,6 +261,8 @@ onBeforeUnmount(() => {
   }
   :deep(.aplayer-list) {
     margin-top: 6px;
+    height: v-bind(listHeight);
+    background-color: transparent;
     ol {
       &::-webkit-scrollbar-track {
         background-color: transparent;

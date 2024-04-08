@@ -11,32 +11,12 @@
       <span @click="store.musicOpenState = false">回到一言</span>
     </div>
     <div class="control">
-      <go-start
-        theme="filled"
-        size="30"
-        fill="#efefef"
-        @click="changeMusicIndex(0)"
-      />
+      <go-start theme="filled" size="30" fill="#efefef" @click="changeMusicIndex(0)" />
       <div class="state" @click="changePlayState">
-        <play-one
-          theme="filled"
-          size="50"
-          fill="#efefef"
-          v-show="!store.playerState"
-        />
-        <pause
-          theme="filled"
-          size="50"
-          fill="#efefef"
-          v-show="store.playerState"
-        />
+        <play-one theme="filled" size="50" fill="#efefef" v-show="!store.playerState" />
+        <pause theme="filled" size="50" fill="#efefef" v-show="store.playerState" />
       </div>
-      <go-end
-        theme="filled"
-        size="30"
-        fill="#efefef"
-        @click="changeMusicIndex(1)"
-      />
+      <go-end theme="filled" size="30" fill="#efefef" @click="changeMusicIndex(1)" />
     </div>
     <div class="menu">
       <div class="name" v-show="!volumeShow">
@@ -48,12 +28,7 @@
       </div>
       <div class="volume" v-show="volumeShow">
         <div class="icon">
-          <volume-mute
-            theme="filled"
-            size="24"
-            fill="#efefef"
-            v-if="volumeNum == 0"
-          />
+          <volume-mute theme="filled" size="24" fill="#efefef" v-if="volumeNum == 0" />
           <volume-small
             theme="filled"
             size="24"
@@ -62,23 +37,13 @@
           />
           <volume-notice theme="filled" size="24" fill="#efefef" v-else />
         </div>
-        <el-slider
-          v-model="volumeNum"
-          :show-tooltip="false"
-          :min="0"
-          :max="1"
-          :step="0.01"
-        />
+        <el-slider v-model="volumeNum" :show-tooltip="false" :min="0" :max="1" :step="0.01" />
       </div>
     </div>
   </div>
   <!-- 音乐列表弹窗 -->
   <Transition name="fade" mode="out-in">
-    <div
-      class="music-list"
-      v-show="musicListShow"
-      @click="musicListShow = false"
-    >
+    <div class="music-list" v-show="musicListShow" @click="closeMusicList()">
       <Transition name="zoom">
         <div class="list" v-show="musicListShow" @click.stop>
           <close-one
@@ -86,22 +51,20 @@
             theme="filled"
             size="28"
             fill="#ffffff60"
-            @click="musicListShow = false"
+            @click="closeMusicList()"
           />
           <Player
+            ref="playerRef"
             :songServer="playerData.server"
             :songType="playerData.type"
             :songId="playerData.id"
             :volume="volumeNum"
-            :shuffle="false"
-            ref="playerRef"
           />
         </div>
       </Transition>
     </div>
   </Transition>
 </template>
-
 <script setup>
 import {
   GoStart,
@@ -116,11 +79,9 @@ import {
 import Player from "@/components/Player.vue";
 import { mainStore } from "@/store";
 const store = mainStore();
-
 // 音量条数据
 const volumeShow = ref(false);
 const volumeNum = ref(store.musicVolume ? store.musicVolume : 0.7);
-
 // 播放列表数据
 const musicListShow = ref(false);
 const playerRef = ref(null);
@@ -129,25 +90,30 @@ const playerData = reactive({
   type: import.meta.env.VITE_SONG_TYPE,
   id: import.meta.env.VITE_SONG_ID,
 });
-
 // 开启播放列表
 const openMusicList = () => {
   musicListShow.value = true;
+  playerRef.value.toggleList();
 };
-
+// 关闭播放列表
+const closeMusicList = () => {
+  musicListShow.value = false;
+  playerRef.value.toggleList();
+};
 // 音乐播放暂停
 const changePlayState = () => {
   playerRef.value.playToggle();
 };
-
 // 音乐上下曲
 const changeMusicIndex = (type) => {
   playerRef.value.changeSong(type);
 };
-
 onMounted(() => {
   // 空格键事件
   window.addEventListener("keydown", (e) => {
+    if (!store.musicIsOk) {
+      return ;
+    }
     if (e.code == "Space") {
       changePlayState();
     }
@@ -155,17 +121,15 @@ onMounted(() => {
   // 挂载方法至 window
   window.$openList = openMusicList;
 });
-
 // 监听音量变化
 watch(
   () => volumeNum.value,
   (value) => {
     store.musicVolume = value;
     playerRef.value.changeVolume(store.musicVolume);
-  }
+  },
 );
 </script>
-
 <style lang="scss" scoped>
 .music {
   width: 100%;
@@ -314,7 +278,6 @@ watch(
     }
   }
 }
-
 // 弹窗动画
 .zoom-enter-active {
   animation: zoom 0.4s ease-in-out;
