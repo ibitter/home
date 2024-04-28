@@ -209,8 +209,11 @@ onMounted(() => {
       height: 100%;
     }
     .swiper-pagination {
-      position: static;
-      margin-top: 4px;
+      margin-top: 12px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
       :deep(.swiper-pagination-bullet) {
         background-color: #fff;
         width: 20px;
