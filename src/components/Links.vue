@@ -51,10 +51,8 @@ import { Icon } from "@vicons/utils";
 import { Link, Blog, CompactDisc, Cloud, Compass, Book, Fire, LaptopCode, Images, ImagesRegular } from "@vicons/fa"; // 注意使用正确的类别
 import { mainStore } from "@/store";
 import { Swiper, SwiperSlide } from "swiper/vue";
-import { Pagination, Mousewheel } from "swiper";
+import { Pagination, Mousewheel } from "swiper/modules";
 import siteLinks from "@/assets/siteLinks.json";
-import "swiper/scss";
-import "swiper/scss/pagination";
 
 const store = mainStore();
 
@@ -215,10 +213,15 @@ onMounted(() => {
       margin-top: 4px;
       :deep(.swiper-pagination-bullet) {
         background-color: #fff;
-        width: 18px;
+        width: 20px;
         height: 4px;
+        margin: 0 4px;
         border-radius: 4px;
+        opacity: 0.2;
         transition: opacity 0.3s;
+        &.swiper-pagination-bullet-active {
+          opacity: 1;
+        }
         &:hover {
           opacity: 1;
         }
