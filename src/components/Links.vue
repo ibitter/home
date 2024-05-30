@@ -278,7 +278,10 @@ onMounted(() => {
         display: block;
         content: attr(data-tooltip);
         font-size: 12px;
-        background: #0d1e1db3;
+        /* background: #0d1e1db3; */
+        background-color: #00000040;
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
         margin-top: -32px;
         padding: 8px 8px;
         width: 120px;
