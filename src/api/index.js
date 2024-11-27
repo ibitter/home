@@ -99,11 +99,11 @@ export async function GetMonitors(apikey, CountDays) {
     custom_uptime_ranges: ranges.join('-'),
   };
 
-  return await axios.post('https://cors.status.org.cn/uptimerobot/v2/getMonitors', postdata, {
+  return await axios.post('https://api.uptimerobot.com/v2/getMonitors', postdata, {
     timeout: 10000
   });
 }
-
+//https://cors.status.org.cn/uptimerobot/v2/getMonitors
 /**
  * 天气
  */
