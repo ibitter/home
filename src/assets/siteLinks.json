@@ -1,8 +1,8 @@
 [
   {
     "icon": "Blog",
-    "name": "博客",
-    "link": "https://wp.ibit.ltd/",
+    "name": "我的博客",
+    "link": "https://wp.ibit.cf/",
     "key": "blog",
     "status": "未知",
     "info": "无数据"
@@ -10,7 +10,7 @@
   {
     "icon": "Compass",
     "name": "JD快车",
-    "link": "https://jd.ibit.ltd/",
+    "link": "https://jd.ibit.cf/",
     "key": "JD",
     "status": "未知",
     "info": "无数据"
@@ -18,7 +18,7 @@
   {
     "icon": "Cloud",
     "name": "网盘",
-    "link": "https://pan.ibit.ltd/",
+    "link": "https://pan.ibit.cf/",
     "key": "pan",
     "status": "未知",
     "info": "无数据"
@@ -26,7 +26,7 @@
   {
     "icon": "ImagesRegular",
     "name": "TG图床",
-    "link": "https://img.ibit.ltd/",
+    "link": "https://img.ibit.cf/",
     "key": "IMG",
     "status": "未知",
     "info": "无数据"
@@ -34,15 +34,15 @@
   {
     "icon": "Book",
     "name": "在线PS",
-    "link": "https://ps.ibit.ltd/",
+    "link": "https://ps.ibit.cf/",
     "key": "PS",
     "status": "未知",
     "info": "无数据"
   },
   {
     "icon": "Images",
-    "name": "柒度图床",
-    "link": "https://pic.ibit.ltd/",
+    "name": "图片编辑",
+    "link": "https://pic.ibit.cf/",
     "key": "PIC",
     "status": "未知",
     "info": "无数据"
