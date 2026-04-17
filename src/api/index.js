@@ -99,7 +99,7 @@ export async function GetMonitors(apikey, CountDays) {
     custom_uptime_ranges: ranges.join('-'),
   };
 
-  return await axios.post('https://urapi.ibit.cf', postdata, {
+  return await axios.post('https://urapi.ibit.cf/v2/getMonitors', postdata, {
     timeout: 10000
   });
 }
